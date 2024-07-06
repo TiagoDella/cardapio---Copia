@@ -38,8 +38,8 @@ menu.addEventListener("click", function (event) {
 });
 
 //fct adc carrinho
-function addToCart(name, price){
-  const existingItem = cart.find(item => item.name === name);
+function addToCart(name, price) {
+  const existingItem = cart.find((item) => item.name === name);
 
   if (existingItem) {
     existingItem.quantity += 1;
@@ -47,7 +47,7 @@ function addToCart(name, price){
     cart.push({
       name,
       price,
-      quantity: 1, 
+      quantity: 1,
     });
   }
 
@@ -56,16 +56,21 @@ function addToCart(name, price){
 
 //att carrinho
 function updateCartModal() {
-    cartItemsContainer.innerHTML = "";
-    let total = 0;
+  cartItemsContainer.innerHTML = "";
+  let total = 0;
 
-    cart.forEach(item => {
-        const cartItemElement = document.createElement("div");
-        cartItemElement.classList.add("flex", "justify-between", "mb-4", "flex-col")
+  cart.forEach((item) => {
+    const cartItemElement = document.createElement("div");
+    cartItemElement.classList.add(
+      "flex",
+      "justify-between",
+      "mb-4",
+      "flex-col"
+    );
 
-        const formattedPrice = parseFloat(item.price).toFixed(2);
-        
-        cartItemElement.innerHTML = `
+    const formattedPrice = parseFloat(item.price).toFixed(2);
+
+    cartItemElement.innerHTML = `
         <div class="flex items-center justify-between">
             <div>
                 <p class="font-medium">${item.name}</p>
@@ -78,60 +83,58 @@ function updateCartModal() {
             </button>
             
         </div>
-        `
+        `;
 
-        total += item.price * item.quantity;
+    total += item.price * item.quantity;
 
-        cartItemsContainer.appendChild(cartItemElement)
-    })
+    cartItemsContainer.appendChild(cartItemElement);
+  });
 
-    const formattedTotal = total.toFixed(2);
-    cartTotal.textContent = formattedTotal;
-    cartTotal.textContent = total.toLocaleString("pt-BR",{
-      style: "currency",
-      currency: "BRL"
-    });
+  const formattedTotal = total.toFixed(2);
+  cartTotal.textContent = formattedTotal;
+  cartTotal.textContent = total.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
 
-    cartCount.innerHTML = cart.length;
-
+  cartCount.innerHTML = cart.length;
 }
 
 // remover itens cart
-cartItemsContainer.addEventListener("click", function(event){
-  if(event.target.classList.contains("remove-btn")){
-    const name = event.target.getAttribute("data-name")
-    
+cartItemsContainer.addEventListener("click", function (event) {
+  if (event.target.classList.contains("remove-btn")) {
+    const name = event.target.getAttribute("data-name");
+
     removeItemCart(name);
   }
-})
+});
 
-function removeItemCart(name){
-  const index = cart.findIndex(item => item.name === name);
+function removeItemCart(name) {
+  const index = cart.findIndex((item) => item.name === name);
 
-  if(index !== -1){
+  if (index !== -1) {
     const item = cart[index];
 
-    if(item.quantity > 1){
+    if (item.quantity > 1) {
       item.quantity -= 1;
       updateCartModal();
-      return
+      return;
     }
     cart.splice(index, 1);
     updateCartModal();
   }
 }
 
-addressInput.addEventListener("input", function(event){
+addressInput.addEventListener("input", function (event) {
   let inputValue = event.target.value;
 
-  if(inputValue !== ""){
-    addressInput.classList.remove("border-red-500")
-    addresWarn.classList.add("hidden")
+  if (inputValue !== "") {
+    addressInput.classList.remove("border-red-500");
+    addresWarn.classList.add("hidden");
   }
-})
+});
 
-checkoutBtn.addEventListener("click", function(){
-
+checkoutBtn.addEventListener("click", function () {
   // const isOpen = checkOpen();
   // if(!isOpen){
   //     Toastify({
@@ -149,47 +152,78 @@ checkoutBtn.addEventListener("click", function(){
   //   return;
   // }
 
-  if(cart.length === 0 ) return;
+  if (cart.length === 0) return;
 
-  if(addressInput.value === ""){
-    addresWarn.classList.remove("hidden")
-    addressInput.classList.add("border-red-500")
+  if (addressInput.value === "") {
+    addresWarn.classList.remove("hidden");
+    addressInput.classList.add("border-red-500");
     return;
   }
 
   //enviar wppweb
-  const cartItems = cart.map((item) => {
-    return(
-      ` ${item.name} 
-      Quantidade: (${item.quantity}) 
-      Preço: R$${item.price} |`
-    )
-  }).join("")
+  const total = cart
+    .reduce((acc, item) => acc + item.price * item.quantity, 0)
+    .toFixed(2);
+  const cartItems = cart
+    .map((item) => {
+      return ` ${item.name} - Quantidade: (${item.quantity}), Preço: R$${item.price} |`;
+    })
+    .join("");
+  const message = `Olá, gostaria de confirmar meu pedido:\n\n${cartItems}\n\nTotal: R$${total}\n\n`;
 
-  const message = encodeURIComponent(cartItems)
-  const phone = "41996029093"
+  const encodedMessage = encodeURIComponent(message);
+  const phone = "41996029093";
 
-  window.open(`https://wa.me/${phone}?text=${message} Endereço: ${addressInput.value}`, "_blank")
+  window.open(
+    `https://wa.me/${phone}?text=${encodedMessage} Endereço: ${addressInput.value}`,
+    "_blank"
+  );
 
   cart.length = 0;
-  updateCartModal(); 
+  updateCartModal();
+});
 
-})
-
-//verificar se esta aberto 
-function checkOpen(){
+//verificar se esta aberto
+function checkOpen() {
   const data = new Date();
   const hora = data.getHours();
   return hora >= 18 && hora < 22;
 }
 
-const spanItem = document.getElementById("date-span")
+const spanItem = document.getElementById("date-span");
 const isOpen = checkOpen();
 
-if(isOpen){
+if (isOpen) {
   spanItem.classList.remove("bg-red-500");
-  spanItem.classList.add("bg-green-600")
-}else{
+  spanItem.classList.add("bg-green-600");
+} else {
   spanItem.classList.remove("bg-green-600");
-  spanItem.classList.add("bg-red-500")
+  spanItem.classList.add("bg-red-500");
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const handleLinkClick = function (event) {
+    // Remover a borda de todos os links
+    document.querySelectorAll("#navbar-items a").forEach((link) => {
+      link.classList.remove("border-b", "text-red-500", "border-red-500");
+    });
+
+    // Adicionar borda ao link clicado
+    event.target.classList.add("border-b", "text-red-500", "border-red-500");
+  };
+
+  document.querySelectorAll("#navbar-items a").forEach((link) => {
+    link.addEventListener("click", handleLinkClick);
+  });
+
+  // Função para lidar com cliques fora dos links
+  document.addEventListener("click", function (event) {
+    // Verifica se o clique foi feito fora dos links do menu de navegação
+    if (!event.target.matches("#navbar-items a")) {
+      // Remove as classes adicionais de todos os links
+      document.querySelectorAll("#navbar-items a").forEach((link) => {
+        link.classList.remove("border-b", "text-red-500", "border-red-500");
+      });
+    }
+  });
+});

@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -40,9 +44,21 @@
       </div>
     </header>
     <!--FIM HEADER-->
+    <nav class=" text-white bg-#f4f4fc mb-5 mt-6  w-full md:flex md:justify-between">
+      <div class="container mx-auto px-2 py-2 md:flex md:justify-between md:items-center overflow-x-auto">
+        <div class="border-t border-b border-gray-200 mx-auto w-full">
+        <div id="navbar-items" class="flex justify-between mx-2  text-black font-semibold text-lg">
+          <a href="#hamburguers" id="link-lanches" class="hover:text-red-600">Hamburguers</a>
+          <a href="#hotdog" id="link-lanches" class="hover:text-red-600">Hot-Dogs</a>
+          <a href="#combos" id="link-combos" class="hover:text-red-600">Combos</a>
+          <a href="#porções" id="link-porções" class="hover:text-red-600">Porções</a>
+          <a href="#bebidas" id="link-bebidas" class="hover:text-red-600">Bebidas</a>
+          </div>
+      </div>
+    </nav>
 
-    <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6">
-      Conheça nosso cardapio
+    <h2 id="lanches" class="text-2xl md:text-3xl font-bold text-center mb-6">
+      Hamburguers
     </h2>
 
     <!--INICIO MENU-->
@@ -158,7 +174,7 @@
       </main>
 
       <div class="mx-auto max-w-7xl px-2 my-2">
-        <h2 class="flex justify-center text-3xl font-bold">Bebidas</h2>
+        <h2 id="bebidas" class="flex justify-center text-2xl font-bold">Bebidas</h2>
       </div>
 
       <!--GRID BEBIDAS-->
@@ -179,7 +195,7 @@
             <div class="flex items-center gap-2 justify-between mt-3">
               <p class="font-bold text-lg">R$ 8.00</p>
               <button
-                class="bg-gray-900 px-5 rounded add-to-cart-btn "
+                class="bg-gray-900 px-5 rounded add-to-cart-btn"
                 data-name="Coca lata"
                 data-price="8.00"
               >
@@ -264,7 +280,10 @@
     </footer>
     <!--FIM BUTTON CART FOOTER-->
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
     <script src="script.js"></script>
   </body>
 </html>
